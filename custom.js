@@ -256,7 +256,7 @@ $(document).ready(function()
 			
 	      	$div.animate({"background-color": col}, 5000);
 			$div.animate({"color":"#000"}, 250);
-			$a.animate({"color":"#000"}, 1000);
+			//$a.animate({"color":"#000"}, 1000);
 			
 			var $b = $("button.btn3");
 			$b.animate({"background-color": col}, 5000);
@@ -270,7 +270,7 @@ $(document).ready(function()
 			var $a = $("a");
 	      	$div.animate({"background-color": col}, 5000);
 			$div.animate({"color":"#fff"},250);
-			$a.animate({"color":"#fff"}, 1000);
+			//$a.animate({"color":"#fff"}, 1000);
 			
 			var $b = $("button.btn3");
 			$b.animate({"background-color": col}, 5000);
