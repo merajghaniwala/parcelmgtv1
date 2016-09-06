@@ -1,5 +1,5 @@
-$(document).ready(function()
-{
+//$(document).ready(function()
+//{
 	var company_id = "1";
 	getdata(company_id);
 	
@@ -172,28 +172,32 @@ $(document).ready(function()
 	getcountry("fromcou");
 	getcountry("tocou");
 
-	$("#fromcou").change(function()
+	$("#fromcou").click(function()
 	{
 		var couid = $("#fromcou").prop("value");
-		getstate("fromstate",couid);
+		if(couid!="")
+			getstate("fromstate",couid);
 	});
 	
-	$("#fromstate").change(function()
+	$("#fromstate").click(function()
 	{
 		var stateid = $("#fromstate").prop("value");
-		getcity("fromcity",stateid);
+		if(stateid!="")
+			getcity("fromcity",stateid);
 	});
 	
 	$("#tocou").change(function()
 	{
 		var couid = $("#tocou").prop("value");
-		getstate("tostate",couid);
+		if(couid!="")
+			getstate("tostate",couid);
 	});
 	
 	$("#tostate").change(function()
 	{
 		var stateid = $("#tostate").prop("value");
-		getcity("tocity",stateid);
+		if(stateid!="")
+			getcity("tocity",stateid);
 	});
 
 	function getcountry(ele_id)
@@ -303,4 +307,4 @@ $(document).ready(function()
 	}
 	/*animation*/
 
-});
+//});
