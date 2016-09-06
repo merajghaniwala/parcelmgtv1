@@ -248,6 +248,20 @@
 			getcity("fromcity",stateid);
 	});
 	
+	$("#fromstate").change(function()
+	{
+		var stateid = $("#fromstate").prop("value");
+		if(stateid!="")
+			getcity("fromcity",stateid);
+	});
+	
+	$("#fromstate").focusout(function()
+	{
+		var stateid = $("#fromstate").prop("value");
+		if(stateid!="")
+			getcity("fromcity",stateid);
+	});
+	
 	$("#tocou").change(function()
 	{
 		var couid = $("#tocou").prop("value");
@@ -256,6 +270,20 @@
 	});
 	
 	$("#tostate").change(function()
+	{
+		var stateid = $("#tostate").prop("value");
+		if(stateid!="")
+			getcity("tocity",stateid);
+	});
+	
+	$("#tostate").click(function()
+	{
+		var stateid = $("#tostate").prop("value");
+		if(stateid!="")
+			getcity("tocity",stateid);
+	});
+
+	$("#tostate").focusout(function()
 	{
 		var stateid = $("#tostate").prop("value");
 		if(stateid!="")
