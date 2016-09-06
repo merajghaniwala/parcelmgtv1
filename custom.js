@@ -241,6 +241,20 @@
 			getstate("fromstate",couid);
 	});
 	
+	$("#fromcou").change(function()
+	{
+		var couid = $("#fromcou").prop("value");
+		if(couid!="")
+			getstate("fromstate",couid);
+	});
+	
+	$("#fromcou").focusout(function()
+	{
+		var couid = $("#fromcou").prop("value");
+		if(couid!="")
+			getstate("fromstate",couid);
+	});
+	
 	$("#fromstate").click(function()
 	{
 		var stateid = $("#fromstate").prop("value");
@@ -260,6 +274,20 @@
 		var stateid = $("#fromstate").prop("value");
 		if(stateid!="")
 			getcity("fromcity",stateid);
+	});
+	
+	$("#tocou").click(function()
+	{
+		var couid = $("#tocou").prop("value");
+		if(couid!="")
+			getstate("tostate",couid);
+	});
+	
+	$("#tocou").change(function()
+	{
+		var couid = $("#tocou").prop("value");
+		if(couid!="")
+			getstate("tostate",couid);
 	});
 	
 	$("#tocou").change(function()
