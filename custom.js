@@ -2,6 +2,7 @@
 //{
 	var company_id = "1";
 	getdata(company_id);
+	getCourierdata(company_id);
 	
 	function getdata(company_id)
 	{
@@ -13,6 +14,20 @@
 			function(data)
 			{	
 		  		$("#view").html(data);
+			}
+		);
+	}
+	
+	function getCourierdata(company_id)
+	{
+		$.post("http://www.webmaxinfotech.com/packagemgtapp/ajax_load.php",
+			{
+				task:"loadCourierView",
+				compid:company_id
+			},
+			function(data)
+			{	
+		  		$("#viewCourier").html(data);
 			}
 		);
 	}
@@ -147,6 +162,53 @@
 		);
 		
 		//alert("k");
+	});
+	
+	$("#btnsavecou").click(function()
+	{
+		var couname = $("#txtcou");
+		if(couname.prop("value")=="")
+		{
+			alert("Please Enter Courier Name");
+			couname.focus();
+			return false;
+		}
+		else
+		{
+			var dupli = true;
+			$.post("http://www.webmaxinfotech.com/packagemgtapp/ajax_load.php",
+				{
+					task:"checkCourier",
+					courier:couname.prop("value"),
+					compid:company_id
+				},
+				function(data)
+				{	
+					if(data=="0")
+					{
+						$.post("http://www.webmaxinfotech.com/packagemgtapp/ajax_load.php",
+							{
+								task:"saveCourier",
+								courier:couname.prop("value"),
+								compid:company_id
+							},
+							function(data)
+							{	
+								alert(data);
+								window.location="index.html";
+							}
+						);
+					}
+					else
+					{
+						alert("Please Enter Another Courier Name");
+						couname.focus();
+						return false;
+					}
+				}
+			);
+			
+		}
 	});
 	/*data submit*/
 	
