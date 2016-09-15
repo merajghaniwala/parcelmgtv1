@@ -21,6 +21,8 @@
 		<div class="page-header">
 			<p class="heading">Add Parcel</p>
 		</div>
+		<div id="menu">
+		</div>
 		<div class="row">
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<form>
@@ -43,6 +45,17 @@
 						</select>
 					</div>
 					<div class="form-group">
+						<div class="col-sm-6 col-xs-6 col-md-6" style="padding:0px;">
+							<label for="">Pincode</label>
+							<input type="number" class="form-control txtbox" id="txtpinfrom" placeholder="Enter Pincode"  style="">
+						</div>
+						<div class="col-sm-6 col-xs-6 col-md-6" style="margin-bottom:10px">
+							<label for="" style="color:#d88aac">.</label>
+							<input type="button" id="btngetfrompin" class="form-control txtbox" value="Submit" style="" />
+						</div>
+						<br>
+					</div>
+					<div class="form-group">
 						<label for="">To Country</label>
 						<select class="form-control selbox" id="tocou">
 							<option value="">Select Country</option>
@@ -61,14 +74,27 @@
 						</select>
 					</div>
 					<div class="form-group">
-						<label for="">Pincode</label>
-						<input type="number" class="form-control txtbox" id="txtpin" placeholder="Enter Pincode">
+						<div class="col-sm-6 col-xs-6 col-md-6" style="padding:0px;">
+							<label for="">Pincode</label>
+							<input type="number" class="form-control txtbox" id="txtpin" placeholder="Enter Pincode">
+						</div>
+						<div class="col-sm-6 col-xs-6 col-md-6" style="margin-bottom:10px">
+							<label for="" style="color:#d88aac">.</label>
+							<input type="button" id="btngettopin" class="form-control txtbox" value="Submit" style="" />
+						</div>
 					</div>
 					<div class="form-group">
-						<label for="">Courier</label>
-						<select class="form-control selbox" id="courier">
-							<option value="">Select Courier</option>
-						</select>
+						<div class="col-sm-9 col-xs-9 col-md-9" style="padding:0px;">
+							<label for="">Courier</label>
+							<select class="form-control selbox" id="courier">
+								<option value="">Select Courier</option>
+							</select>
+						</div>
+						<div class="col-sm-3 col-xs-3 col-md-3" style="margin-bottom:10px">
+							<label for="" style="color:#d88aac;">.</label>
+							
+							<button type="button" style="margin-top:3px;" class="form-control " id="addcourier"><i style="line-height:3px;" class="fa fa-2x fa-plus" aria-hidden="true"></i></button>
+						</div>
 					</div>
 					<div class="form-group">
 						<label for="">Weight (GRAM ONLY)</label>
@@ -90,6 +116,29 @@
 					</div>
 				</form>
 			</div>
+			
+			<div class="modal fade" id="myModalCourier" role="dialog" style="color:black !important;">
+				<div class="modal-dialog">
+
+				<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title" style="color:black">Add New Courier</h4>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<input placeholder="Enter Courier" type="text" class="form-control " id="newcou" style="border:1px solid black; border-radius:20px !important; font-size:20px; height:40px;">
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" id="updatecou" class="btn3 btn2 btn btn-default" >Save</button>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			
 		</div>
 		
 	</div>
