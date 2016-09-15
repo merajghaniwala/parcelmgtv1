@@ -6,6 +6,20 @@ body, h1, h2, h3, h4, h5, h6, p{
 color:#FFFFFF;
 font-family: 'Quicksand', sans-serif;
 }
+
+#menucss
+{
+	background: #d88aac;
+    border: 1px solid white;
+    border-radius: 20px;
+	color:white;
+}
+.navanchor
+{
+	color:white !important;
+	font-size: x-large;
+}
+
 .txtbox
 {
 border-radius:20px !important;
