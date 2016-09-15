@@ -541,10 +541,12 @@
 			var col = rgb2hex(p1,p2,p3);
 			var $div = $("body");
 			var $a = $("a");
+			var $menu = $("#menucss");
 			
 	      	$div.animate({"background-color": col}, 5000);
 			$div.animate({"color":"#000"}, 250);
 			//$a.animate({"color":"#000"}, 1000);
+			$menu.animate({"background-color": col}, 5000);
 			
 			var $b = $("button.btn3");
 			$b.animate({"background-color": col}, 5000);
@@ -556,9 +558,12 @@
 			var col = rgb2hex(p1,p2,p3);
 			var $div = $("body");
 			var $a = $("a");
+			var $menu = $("#menucss");
+			
 	      	$div.animate({"background-color": col}, 5000);
 			$div.animate({"color":"#fff"},250);
 			//$a.animate({"color":"#fff"}, 1000);
+			$menu.animate({"background-color": col}, 5000);
 			
 			var $b = $("button.btn3");
 			$b.animate({"background-color": col}, 5000);
