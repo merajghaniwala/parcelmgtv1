@@ -333,8 +333,8 @@
 	/*addcourier*/
 	
 	/*location*/
-	//getcountry("fromcou");
-	//getcountry("tocou");
+	getcountry("fromcou");
+	getcountry("tocou");
 
 	$("#fromcou").click(function()
 	{
