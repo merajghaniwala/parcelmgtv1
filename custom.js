@@ -1,8 +1,23 @@
 //$(document).ready(function()
 //{
+	loadMenus();
 	var company_id = "1";
 	getdata(company_id);
 	getCourierdata(company_id);
+	
+	
+	function loadMenus()
+	{
+		$.post("http://www.webmaxinfotech.com/packagemgtapp/ajax_load.php",
+			{
+				task:"loadMenu",
+			},
+			function(data)
+			{	
+		  		$("#menu").html(data);
+			}
+		);
+	}
 	
 	function getdata(company_id)
 	{
@@ -38,6 +53,7 @@
 		$(this).attr("data-target","#myModal");
 		$("#packageid").attr("value",$(this).prop("id"))
 	});
+	
 	
 	$("#updatepack").click(function()
 	{
@@ -154,6 +170,17 @@
 		  		if(data.trim()=="1")
 				{
 					alert("Data Saved");
+					fromcou.attr("value","");
+					fromstate.attr("value","");
+					fromcity.attr("value","");
+					tocou.attr("value","");
+					tostate.attr("value","");
+					tocity.attr("value","");
+					pin.attr("value","");
+					courier.attr("value","");
+					weight.attr("value","");
+					ddate.attr("value","");
+					cmt.attr("value","");
 					window.location = "view.html";
 				}
 				else
@@ -210,6 +237,26 @@
 			
 		}
 	});
+	
+	$("body").on("click","i.delparcel",function()
+	{
+		var id = $(this).prop("id");
+		var con = confirm("Are You Sure You Want Delete ?");
+		if(con)
+		{
+			$.post("http://www.webmaxinfotech.com/packagemgtapp/ajax_load.php",
+				{
+					task:"deleteParcel",
+					pid:id
+				},
+				function(data)
+				{	
+					alert(data);
+					getdata(company_id);
+				}
+			);
+		}
+	});
 	/*data submit*/
 	
 	/*courier*/
@@ -230,25 +277,66 @@
 	}
 	/*courier*/
 	
+	/*addcourier*/
+	$("#addcourier").click(function()
+	{
+		$(this).attr("data-toggle","modal");
+		$(this).attr("data-target","#myModalCourier");
+	});
+	
+	$("#updatecou").click(function()
+	{
+		var couname = $("#newcou").prop("value");
+		if(couname=="")
+		{
+			alert("Please Enter Courier Name");
+			$("#newcou").focus();
+			return false;
+		}
+		else
+		{
+			var dupli = true;
+			$.post("http://www.webmaxinfotech.com/packagemgtapp/ajax_load.php",
+				{
+					task:"checkCourier",
+					courier:couname,
+					compid:company_id
+				},
+				function(data)
+				{	
+					if(data=="0")
+					{
+						$.post("http://www.webmaxinfotech.com/packagemgtapp/ajax_load.php",
+							{
+								task:"saveCourier",
+								courier:couname,
+								compid:company_id
+							},
+							function(data)
+							{	
+								alert(data);
+								getcourier(company_id);
+								$('#myModalCourier').modal('hide');
+							}
+						);
+					}
+					else
+					{
+						alert("Please Enter Another Courier Name");
+						$("#newcou").focus();
+						return false;
+					}
+				}
+			);
+		}
+	});
+	/*addcourier*/
+	
 	/*location*/
-	getcountry("fromcou");
-	getcountry("tocou");
+	//getcountry("fromcou");
+	//getcountry("tocou");
 
 	$("#fromcou").click(function()
-	{
-		var couid = $("#fromcou").prop("value");
-		if(couid!="")
-			getstate("fromstate",couid);
-	});
-	
-	$("#fromcou").change(function()
-	{
-		var couid = $("#fromcou").prop("value");
-		if(couid!="")
-			getstate("fromstate",couid);
-	});
-	
-	$("#fromcou").focusout(function()
 	{
 		var couid = $("#fromcou").prop("value");
 		if(couid!="")
@@ -262,34 +350,6 @@
 			getcity("fromcity",stateid);
 	});
 	
-	$("#fromstate").change(function()
-	{
-		var stateid = $("#fromstate").prop("value");
-		if(stateid!="")
-			getcity("fromcity",stateid);
-	});
-	
-	$("#fromstate").focusout(function()
-	{
-		var stateid = $("#fromstate").prop("value");
-		if(stateid!="")
-			getcity("fromcity",stateid);
-	});
-	
-	$("#tocou").click(function()
-	{
-		var couid = $("#tocou").prop("value");
-		if(couid!="")
-			getstate("tostate",couid);
-	});
-	
-	$("#tocou").change(function()
-	{
-		var couid = $("#tocou").prop("value");
-		if(couid!="")
-			getstate("tostate",couid);
-	});
-	
 	$("#tocou").change(function()
 	{
 		var couid = $("#tocou").prop("value");
@@ -298,20 +358,6 @@
 	});
 	
 	$("#tostate").change(function()
-	{
-		var stateid = $("#tostate").prop("value");
-		if(stateid!="")
-			getcity("tocity",stateid);
-	});
-	
-	$("#tostate").click(function()
-	{
-		var stateid = $("#tostate").prop("value");
-		if(stateid!="")
-			getcity("tocity",stateid);
-	});
-
-	$("#tostate").focusout(function()
 	{
 		var stateid = $("#tostate").prop("value");
 		if(stateid!="")
@@ -358,7 +404,127 @@
 			}
 		);
 	}
+	
+	function setcou(ele_id,couid)
+	{
+		$.post("http://www.webmaxinfotech.com/packagemgtapp/ajax_load.php",
+			{
+				task:"loadCountry",
+				couid:couid
+			},
+			function(data)
+			{	
+		  		$("#"+ele_id).append(data);
+			}
+		);
+	}
+	
+	function setstate(ele_id,couid,sid)
+	{
+		$.post("http://www.webmaxinfotech.com/packagemgtapp/ajax_load.php",
+			{
+				task:"loadState",
+				cou:couid,
+				sid:sid
+			},
+			function(data)
+			{	
+		  		$("#"+ele_id).html(data);
+			}
+		);
+	}
+	
+	function setcity(ele_id,stateid,cid)
+	{
+		$.post("http://www.webmaxinfotech.com/packagemgtapp/ajax_load.php",
+			{
+				task:"loadCity",
+				state:stateid,
+				cid:cid
+			},
+			function(data)
+			{	
+		  		$("#"+ele_id).html(data);
+			}
+		);
+	}
 	/*location*/
+	
+	$("#btngetfrompin").click(function()
+	{
+		var pin = $("#txtpinfrom").prop("value");
+		if(pin=="")
+		{
+			alert("Please Enter Pincode");
+			$("#txtpinfrom").focus();
+			return false;
+		}
+		$.when(
+		$.post("http://www.webmaxinfotech.com/packagemgtapp/ajax_load.php",
+			{
+				task:"loadallfrompin",
+				pin:pin
+			},
+			function(data)
+			{	
+		  		console.log(data);
+				if(data=="no")
+				{
+					alert("Please Enter Valid Pincode");
+				}
+				else
+				{
+					var res = data.split(":");
+					var couid = (res[0].split("-"))[1];
+					var stateid = (res[1].split("-"))[1];
+					var cityid = (res[2].split("-"))[1];
+					console.log(couid+"\n"+stateid+"\n"+cityid);
+					setcou("fromcou",couid);
+					setstate("fromstate",couid,stateid);
+					setcity("fromcity",stateid,cityid);
+				}
+			}
+		)
+		);
+	});
+	
+	$("#btngettopin").click(function()
+	{
+		var pin = $("#txtpinfrom").prop("value");
+		if(pin=="")
+		{
+			alert("Please Enter Pincode");
+			$("#txtpin").focus();
+			return false;
+		}
+		$.when(
+		$.post("http://www.webmaxinfotech.com/packagemgtapp/ajax_load.php",
+			{
+				task:"loadallfrompin",
+				pin:pin
+			},
+			function(data)
+			{	
+		  		console.log(data);
+				if(data=="no")
+				{
+					alert("Please Enter Valid Pincode");
+				}
+				else
+				{
+					var res = data.split(":");
+					var couid = (res[0].split("-"))[1];
+					var stateid = (res[1].split("-"))[1];
+					var cityid = (res[2].split("-"))[1];
+					console.log(couid+"\n"+stateid+"\n"+cityid);
+					setcou("tocou",couid);
+					setstate("tostate",couid,stateid);
+					setcity("tocity",stateid,cityid);
+				}
+			}
+		)
+		);
+	});
 	
 	/*animation*/
 	setInterval(function()
