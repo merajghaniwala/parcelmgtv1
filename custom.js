@@ -526,7 +526,7 @@
 		);
 	});
 	
-	/*animation*/
+	/*animation
 	setInterval(function()
 	{
 		var p1 = Math.floor((Math.random() * 255) + 1);
