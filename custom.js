@@ -490,7 +490,7 @@
 	
 	$("#btngettopin").click(function()
 	{
-		var pin = $("#txtpinfrom").prop("value");
+		var pin = $("#txtpin").prop("value");
 		if(pin=="")
 		{
 			alert("Please Enter Pincode");
