@@ -33,6 +33,33 @@
 		);
 	}
 	
+	$("#report").click(function()
+	{
+		getreportdata(company_id);
+	});
+	
+	function getreportdata(company_id)
+	{
+		var pin = $("#txtreportpin");
+		if(pin.prop("value")=="")
+		{
+			alert("Please Enter Pincode");
+			pin.focus();
+			return false;
+		}
+		$.post("http://www.webmaxinfotech.com/packagemgtapp/ajax_load.php",
+			{
+				task:"loadReportView",
+				compid:company_id,
+				pin:pin.prop("value")
+			},
+			function(data)
+			{	
+				$("#report_body").html(data);
+			}
+		);
+	}
+	
 	function getCourierdata(company_id)
 	{
 		$.post("http://www.webmaxinfotech.com/packagemgtapp/ajax_load.php",
@@ -94,6 +121,7 @@
 		var courier = $("#courier");
 		var weight = $("#txtweight");
 		var ddate = $("#txtdate");
+		var tno = $("#txttno");
 		var cmt = $("#comment");
 		var err = $("#err");
 		err.show();
@@ -146,6 +174,13 @@
 			ddate.focus();
 			return false;
 		}
+		if(tno.prop("value")=="")
+		{
+			alert("Please Enter Tracking Number");
+			err.text("Please Enter Tracking Number");
+			tno.focus();
+			return false;
+		}
 		err.hide();
 		var res = "fromcou" +fromcou.prop("value")+ "\nfromstate" +fromstate.prop("value")+ "\nfromcity" +fromcity.prop("value")+ "\ntocou" +tocou.prop("value")+ "\ntostate" +tostate.prop("value")+ "\ntocity" +tocity.prop("value")+ "\npin" +pin.prop("value")+ "\ncourier" +courier.prop("value")+ "\nweight" +weight.prop("value")+ "\nddate" +ddate.prop("value")+ "\ncmt" +cmt.prop("value")+ "\ncompany_id" +company_id;
 		//alert(res);
@@ -162,6 +197,7 @@
 				courier:courier.prop("value"),
 				weight:weight.prop("value"),
 				ddate:ddate.prop("value"),
+				tno:tno.prop("value"),
 				cmt:cmt.prop("value"),
 				company_id:company_id
 			},
@@ -180,6 +216,7 @@
 					courier.attr("value","");
 					weight.attr("value","");
 					ddate.attr("value","");
+					tno.attr("value","");
 					cmt.attr("value","");
 					window.location = "view.html";
 				}
@@ -194,10 +231,25 @@
 	$("#btnsavecou").click(function()
 	{
 		var couname = $("#txtcou");
+		var coulink = $("#txtlink");
+		var urlPattern = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/
+		
 		if(couname.prop("value")=="")
 		{
 			alert("Please Enter Courier Name");
 			couname.focus();
+			return false;
+		}
+		else if(coulink.prop("value")=="")
+		{
+			alert("Please Enter Courier Link");
+			coulink.focus();
+			return false;
+		}
+		else if(!coulink.prop("value").match(urlPattern))
+		{
+			alert("Please Enter Valid Courier Link");
+			coulink.focus();
 			return false;
 		}
 		else
@@ -217,6 +269,7 @@
 							{
 								task:"saveCourier",
 								courier:couname.prop("value"),
+								link:coulink.prop("value"),
 								compid:company_id
 							},
 							function(data)
@@ -287,10 +340,24 @@
 	$("#updatecou").click(function()
 	{
 		var couname = $("#newcou").prop("value");
+		var coulink = $("#txtlink_m");
+		var urlPattern = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/
 		if(couname=="")
 		{
 			alert("Please Enter Courier Name");
 			$("#newcou").focus();
+			return false;
+		}
+		else if(coulink.prop("value")=="")
+		{
+			alert("Please Enter Courier Link");
+			coulink.focus();
+			return false;
+		}
+		else if(!coulink.prop("value").match(urlPattern))
+		{
+			alert("Please Enter Valid Courier Link");
+			coulink.focus();
 			return false;
 		}
 		else
@@ -310,6 +377,7 @@
 							{
 								task:"saveCourier",
 								courier:couname,
+								link:coulink.prop("value"),
 								compid:company_id
 							},
 							function(data)
@@ -526,7 +594,65 @@
 		);
 	});
 	
-	/*animation
+	$("body").on("click","a.coulink",function(event)
+	{
+		var id = $(this).prop("id");
+		var link = $(this).prop("name");
+		var target = document.getElementById(id);
+		copyToClipboard(document.getElementById(id));
+		window.location.href=link;
+	});
+	
+	function copyToClipboard(elem) {
+	  // create hidden text element, if it doesn't already exist
+		var targetId = "_hiddenCopyText_";
+		var isInput = elem.tagName === "INPUT" || elem.tagName === "TEXTAREA";
+		var origSelectionStart, origSelectionEnd;
+		if (isInput) {
+			// can just use the original source element for the selection and copy
+			target = elem;
+			origSelectionStart = elem.selectionStart;
+			origSelectionEnd = elem.selectionEnd;
+		} else {
+			// must use a temporary form element for the selection and copy
+			target = document.getElementById(targetId);
+			if (!target) {
+				var target = document.createElement("textarea");
+				target.style.position = "absolute";
+				target.style.left = "-9999px";
+				target.style.top = "0";
+				target.id = targetId;
+				document.body.appendChild(target);
+			}
+			target.textContent = elem.textContent;
+		}
+		// select the content
+		var currentFocus = document.activeElement;
+		target.focus();
+		target.setSelectionRange(0, target.value.length);
+		
+		// copy the selection
+		var succeed;
+		try {
+			  succeed = document.execCommand("copy");
+		} catch(e) {
+			succeed = false;
+		}
+		// restore original focus
+		if (currentFocus && typeof currentFocus.focus === "function") {
+			currentFocus.focus();
+		}
+		
+		if (isInput) {
+			// restore prior selection
+			elem.setSelectionRange(origSelectionStart, origSelectionEnd);
+		} else {
+			// clear temporary content
+			target.textContent = "";
+		}
+		return succeed;
+	}
+	/*animation	
 	setInterval(function()
 	{
 		var p1 = Math.floor((Math.random() * 255) + 1);
@@ -541,12 +667,15 @@
 			var col = rgb2hex(p1,p2,p3);
 			var $div = $("body");
 			var $a = $("a");
-			var $menu = $("#menucss");
+			var $menu = $(".navanchor");
 			
-	      	$div.animate({"background-color": col}, 5000);
+	      	
+			$div.animate({"background-color": col}, 5000);
+			
 			$div.animate({"color":"#000"}, 250);
+			$menu.animate({"color":"#000 !important"}, 250);
 			//$a.animate({"color":"#000"}, 1000);
-			$menu.animate({"background-color": col}, 5000);
+			
 			
 			var $b = $("button.btn3");
 			$b.animate({"background-color": col}, 5000);
@@ -558,12 +687,13 @@
 			var col = rgb2hex(p1,p2,p3);
 			var $div = $("body");
 			var $a = $("a");
-			var $menu = $("#menucss");
+			var $menu = $(".navanchor");
 			
 	      	$div.animate({"background-color": col}, 5000);
 			$div.animate({"color":"#fff"},250);
+			$menu.animate({"color":"#fff !important"}, 250);
 			//$a.animate({"color":"#fff"}, 1000);
-			$menu.animate({"background-color": col}, 5000);
+			
 			
 			var $b = $("button.btn3");
 			$b.animate({"background-color": col}, 5000);
