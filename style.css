@@ -7,9 +7,15 @@ color:#FFFFFF;
 font-family: 'Quicksand', sans-serif;
 }
 
+body
+{
+	//background-image:url(http://www.webmaxinfotech.com/packagemgtapp/2_.jpg) !important;
+	background:linear-gradient(570deg, #0fb8ad 0%, #1fc8db 50%, #2cb5e8 60%);
+}
+
 #menucss
 {
-	background: #d88aac;
+	background: transparent;
     border: 1px solid white;
     border-radius: 20px;
 	color:white;
@@ -70,4 +76,10 @@ a:hover, a:focus
 .table thead tr th, .table tbody tr td
 {
 	border:1px solid white;
+}
+
+.index-a
+{
+	text-align:center;
+	opacity:0.8;
 }
